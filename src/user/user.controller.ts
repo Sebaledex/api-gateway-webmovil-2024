@@ -38,5 +38,6 @@ export class UserController {
     delete(@Param('id') id: string): Observable<any> {
       return this._clientProxyUser.send(UserMSG.DELETE, id);
     }
+    
 
   }
