@@ -28,14 +28,19 @@ export class AuthService {
   }
 
   async signIn(user: any) {
-    const payload = {
+    const payload = { username: user.username, sub: user.userId };
+    const access_token = this.jwtService.sign(payload);
+    return {
+      access_token,
+      user_id: user._id,
+      name: user.name,
       username: user.username,
-      sub: user._id,
+      //user_role: user.roles[0],
+      //user_role2: user.roles[1],
     };
-
-    return { access_token: this.jwtService.sign(payload), userId: user._id, };
   }
-
+  
+  
   async signUp(userDTO: UserDTO) {
     return await this._clientProxyUser
       .send(UserMSG.CREATE, userDTO)
