@@ -13,3 +13,7 @@ export enum UserMSG {
   VALID_USER = 'VALID_USER',
 }
 
+export enum tokenType {
+  ACCESS = 'access',
+  REFRESH = 'refresh',
+}
