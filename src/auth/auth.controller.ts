@@ -1,27 +1,35 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UserDTO } from 'src/user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokenGuard } from './guards/refresh.guard';
 
-@Controller('api/v2/auth')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('signin')
-  async signIn(@Req() req) {
-    return await this.authService.login(req.user);
+  @Post('login')
+  async login(@Req() req) {
+    return await this.authService.login({ ...req.body });
   }
 
-  @Post('signup')
-  async signUp(@Body() userDTO: UserDTO) {
-    return await this.authService.signUp(userDTO);
+  @Post('register')
+  async register(@Body() userDTO: UserDTO) {
+    return await this.authService.register(userDTO);
   }
 
   @Post('update-jwt')
   @UseGuards(RefreshTokenGuard)
-  async updateJWT(@Body() req) {
+  async updateJWT(@Request() req) {
+    const { refreshToken } = req.body;
     try {
-      const updatedToken = await this.authService.refresh(req.refreshToken);
+      const updatedToken = await this.authService.refresh(refreshToken);
       return {
         statusCode: 200,
         success: true,

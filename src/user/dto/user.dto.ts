@@ -21,7 +21,18 @@ export class UserDTO {
   readonly password: string;
 }
 
-export class UserLoginDto {
+export class RegisterUserDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
+  readonly email: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly password: string;
+}
+
+export class LoginUserDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail()

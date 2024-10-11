@@ -17,13 +17,8 @@ export class RefreshTokenGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('RefreshTokenGuard');
-
     const request = context.switchToHttp().getRequest();
-    console.log(request);
     const token = this.extractTokenFromHeader(request);
-
-    console.log(token);
 
     if (!token) {
       throw new UnauthorizedException('No autorizado');
@@ -36,10 +31,11 @@ export class RefreshTokenGuard implements CanActivate {
 
       // Verificar si el token es de tipo 'refresh'
       if (payload.type !== tokenType.REFRESH) {
+        console.log('inva');
         throw new UnauthorizedException('Token inválido');
       }
-      request.refreshToken = token;
-      request.email = request.email;
+
+      request.body.refreshToken = token;
 
       // Si el token es válido y de tipo 'refresh', permitir el acceso
       return true;

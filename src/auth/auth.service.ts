@@ -4,11 +4,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ClientProxyWebMovil } from 'src/common/proxy/client-proxy';
-import { UserDTO, UserLoginDto } from 'src/user/dto/user.dto';
-import { tokenType, UserMSG } from 'src/common/constants';
-import { firstValueFrom } from 'rxjs';
 import * as bcrypt from 'bcrypt';
+import { firstValueFrom } from 'rxjs';
+import { tokenType, UserMSG } from 'src/common/constants';
+import { ClientProxyWebMovil } from 'src/common/proxy/client-proxy';
+import { LoginUserDto, RegisterUserDto } from 'src/user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,11 +32,14 @@ export class AuthService {
     }
   }
 
-  async login({ email, password }: UserLoginDto) {
+  async login({ email, password }: LoginUserDto) {
+    console.log('Login', email);
     try {
       const user = await firstValueFrom(
         this._clientProxyUser.send(UserMSG.FIND_ONE, email),
       );
+
+      console.log('User', user);
 
       if (!user) {
         throw new NotFoundException(
@@ -77,8 +80,6 @@ export class AuthService {
         data: {
           accessToken: accessToken,
           refreshToken: refreshToken,
-          email: user.email,
-          role: user.role,
         },
       };
 
@@ -99,23 +100,20 @@ export class AuthService {
     }
   }
 
-  async signUp(userDTO: UserDTO) {
-    return await this._clientProxyUser
-      .send(UserMSG.CREATE, userDTO)
-      .toPromise();
+  async register(registerDto: RegisterUserDto) {
+    const result = await firstValueFrom(
+      this._clientProxyUser.send(UserMSG.CREATE, registerDto),
+    );
+    return result;
   }
 
   async refresh(refreshToken: string) {
     try {
       const payload = await this.jwtService.verify(refreshToken, {
-        secret: process.env.JWT_REFRESH_SECRET, // Asegúrate de usar la clave secreta correcta para los refresh tokens
+        secret: process.env.JWT_SECRET,
       });
-
-      // const user = await this.usersService.findByEmail(payload.email); // Suponiendo que existe un servicio para buscar usuarios
-
-      //realmente hay que ir a buscar el usuario por el id
       const user = await firstValueFrom(
-        this._clientProxyUser.send(UserMSG.FIND_ONE, payload.sub),
+        this._clientProxyUser.send(UserMSG.FIND_ONE, payload.email),
       );
       const newToken = this.jwtService.sign(
         {
