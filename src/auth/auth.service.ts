@@ -25,6 +25,7 @@ export class AuthService {
 
   // Inicia sesión y genera el access_token y refresh_token
   async signIn(user: any) {
+
     const payload = { username: user.username, sub: user._id };
 
     return {
@@ -34,7 +35,7 @@ export class AuthService {
     };
   }
 
-  // Registrar un nuevo usuario
+
   async signUp(userDTO: UserDTO) {
     return await this._clientProxyUser
       .send(UserMSG.CREATE, userDTO)
