@@ -32,6 +32,8 @@ RUN npm ci --only=production && npm cache clean --force
 # Copiar los archivos .env
 COPY .env* ./
 
+ENV NODE_ENV=production
+
 # Exponer el puerto en el que se ejecutará la aplicación
 EXPOSE 8000
 
