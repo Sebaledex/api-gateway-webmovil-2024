@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { QuestionnaireModule } from './questionnaire/questionnaire.module';
-import config from './config';
 import * as Joi from 'joi';
+import { AuthModule } from './auth/auth.module';
+import config from './config';
+import { QuestionnaireModule } from './questionnaire/questionnaire.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -31,7 +29,5 @@ import * as Joi from 'joi';
     AuthModule,
     QuestionnaireModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
