@@ -3,10 +3,15 @@ import { AppModule } from './app.module';
 import { AllExceptionFilter } from './common/filters/http-exception.filter';
 import { TimeOutInterceptor } from './common/interceptors/timeout.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigType } from '@nestjs/config';
+import config from './config';
 
 async function bootstrap() {
   console.log('process.env.PORT', process.env.NODE_ENV);
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get<ConfigType<typeof config>>(config.KEY);
+
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalInterceptors(new TimeOutInterceptor());
   app.setGlobalPrefix('api/v2');
@@ -26,6 +31,6 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(configService.app.port);
 }
 bootstrap();
