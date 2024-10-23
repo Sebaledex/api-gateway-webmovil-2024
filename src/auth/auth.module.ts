@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ProxyModule } from 'src/common/proxy/proxy.module';
+import config from 'src/config';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -16,12 +17,11 @@ import { LocalStrategy } from './strategies/local.strategy';
     ProxyModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get('JWT_SECRET'),
+      inject: [config.KEY],
+      useFactory: (configService: ConfigType<typeof config>) => ({
+        secret: configService.jwt.accessSecret,
         signOptions: {
-          expiresIn: config.get('EXPIRES_IN'),
-          audience: config.get('APP_URL'),
+          expiresIn: configService.jwt.accessExpiresIn,
         },
       }),
     }),
