@@ -1,21 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import {
   ClientProxy,
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
 import { RabbitMQ } from '../constants';
+import config from 'src/config';
 
 @Injectable()
 export class ClientProxyWebMovil {
-  constructor(private readonly config: ConfigService) {}
+  constructor(
+    @Inject(config.KEY)
+    private readonly configService: ConfigType<typeof config>,
+  ) {}
 
   clientProxyUsers(): ClientProxy {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: this.config.get('LOCAL_AMQP_URL'),
+        urls: [this.configService.rabbitMQ.amqpUrl],
         queue: RabbitMQ.UserQueue,
       },
     });
@@ -25,7 +29,7 @@ export class ClientProxyWebMovil {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: this.config.get('LOCAL_AMQP_URL'),
+        urls: [this.configService.rabbitMQ.amqpUrl],
         queue: RabbitMQ.QuestionnairesQueue,
       },
     });
