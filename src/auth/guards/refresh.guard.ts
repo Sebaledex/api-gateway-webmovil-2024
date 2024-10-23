@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import {
   CanActivate,
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -11,10 +12,7 @@ import { tokenType } from 'src/common/constants';
 
 @Injectable()
 export class RefreshTokenGuard implements CanActivate {
-  constructor(
-    private jwtService: JwtService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -31,7 +29,6 @@ export class RefreshTokenGuard implements CanActivate {
 
       // Verificar si el token es de tipo 'refresh'
       if (payload.type !== tokenType.REFRESH) {
-        console.log('inva');
         throw new UnauthorizedException('Token inválido');
       }
 

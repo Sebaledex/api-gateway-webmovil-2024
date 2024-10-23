@@ -20,4 +20,14 @@ export class ClientProxyWebMovil {
       },
     });
   }
+
+  clietProxyQuestionnaire(): ClientProxy {
+    return ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: this.config.get('LOCAL_AMQP_URL'),
+        queue: RabbitMQ.QuestionnairesQueue,
+      },
+    });
+  }
 }
