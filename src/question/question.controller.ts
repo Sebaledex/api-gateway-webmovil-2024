@@ -15,9 +15,16 @@ export class QuestionController {
     constructor(private readonly clientProxy: ClientProxyWebMovil) {}
     private _clientProxyQuestion = this.clientProxy.clientProxyQuestions();
   
-    @Post()
-    create(@Body() questionDTO: QuestionDTO): Observable<IQuestion> {
-      return this._clientProxyQuestion.send(QuestionsMSG.CREATE, questionDTO);
+    @Post(':id')
+    create(@Param('id') userId: string, @Body() questionDTO: QuestionDTO): Observable<IQuestion> {
+        // Set user_id in the serviceDTO
+        userId = userId;
+
+        // Optionally set a default rating if not provided
+       
+
+        const payload = { questionDTO, userId, };
+        return this._clientProxyQuestion.send(QuestionsMSG.CREATE, payload);
     }
   
     @Get()
