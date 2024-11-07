@@ -51,4 +51,11 @@ export class QuestionController {
         return this._clientProxyQuestion.send(QuestionsMSG.FIND_BY_USER, userId);
     }
 
+    @Patch(':questionId/answer')
+    saveAnswer(
+        @Param('questionId') questionId: string,@Body() payload: { numeroPregunta: number; respuesta: string }): Observable<IQuestion> {
+        const data = { questionId, ...payload };
+        return this._clientProxyQuestion.send(QuestionsMSG.SAVE_ANSWER, data);
+    }
+    
   }
