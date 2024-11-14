@@ -15,15 +15,11 @@ export class QuestionController {
     constructor(private readonly clientProxy: ClientProxyWebMovil) {}
     private _clientProxyQuestion = this.clientProxy.clientProxyQuestions();
   
-    @Post(':id')
-    create(@Param('id') userId: string, @Body() questionDTO: QuestionDTO): Observable<IQuestion> {
-        // Set user_id in the serviceDTO
-        userId = userId;
-
-        // Optionally set a default rating if not provided
+    @Post()
+    create( @Body() questionDTO: QuestionDTO): Observable<IQuestion> {
        
-
-        const payload = { questionDTO, userId, };
+      
+        const payload = { questionDTO };
         return this._clientProxyQuestion.send(QuestionsMSG.CREATE, payload);
     }
   
@@ -51,11 +47,6 @@ export class QuestionController {
         return this._clientProxyQuestion.send(QuestionsMSG.FIND_BY_USER, userId);
     }
 
-    @Patch(':questionId/answer')
-    saveAnswer(
-        @Param('questionId') questionId: string,@Body() payload: { numeroPregunta: number; respuesta: string }): Observable<IQuestion> {
-        const data = { questionId, ...payload };
-        return this._clientProxyQuestion.send(QuestionsMSG.SAVE_ANSWER, data);
-    }
+    
     
   }

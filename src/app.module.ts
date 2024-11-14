@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AreaModule } from './area/area.module';
 import { QuestionModule } from './question/question.module';
+import { RespuestaModule } from './respuesta/respuesta.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { QuestionModule } from './question/question.module';
       envFilePath: ['.env.development'],
       isGlobal: true,
     }),
-    UserModule,AuthModule,AreaModule,QuestionModule
+    UserModule,AuthModule,AreaModule,QuestionModule,RespuestaModule
   ],
   controllers: [AppController],
   providers: [AppService],
