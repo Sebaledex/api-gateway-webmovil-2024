@@ -54,9 +54,14 @@ export class AuthService {
         sub: payload.sub,
       }, { expiresIn: '15m' });
 
-      return { access_token: newAccessToken };
+      const newRefreshToken = this.jwtService.sign({
+        username: payload.username,
+        sub: payload.sub,
+      }, { expiresIn: '7d' });
+
+      return { access_token: newAccessToken, refresh_token: newRefreshToken };
     } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('Invalid token');
     }
   }
 }

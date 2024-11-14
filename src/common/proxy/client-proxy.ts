@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {ClientProxy,ClientProxyFactory,Transport,} from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { RabbitMQ } from '../constants';
 
 @Injectable()
@@ -17,26 +21,36 @@ export class ClientProxyWebMovil {
     });
   }
 
-  clientProxyArea(): ClientProxy{
+  clientProxyArea(): ClientProxy {
     return ClientProxyFactory.create({
-       transport: Transport.RMQ,
-       options:{
-           urls: this.config.get('AMQP_URL'),
-           queue: RabbitMQ.AreaQueue,
-              }
+      transport: Transport.RMQ,
+      options: {
+        urls: this.config.get('AMQP_URL'),
+        queue: RabbitMQ.AreaQueue,
+      },
+    });
+  }
 
-    })}
-    
-  clientProxyQuestions(): ClientProxy{
+  clientProxyQuestions(): ClientProxy {
     return ClientProxyFactory.create({
-       transport: Transport.RMQ,
-       options:{
-           urls: this.config.get('AMQP_URL'),
-           queue: RabbitMQ.QuestionsQueue,
-              }
+      transport: Transport.RMQ,
+      options: {
+        urls: this.config.get('AMQP_URL'),
+        queue: RabbitMQ.QuestionsQueue,
+      },
+    });
+  }
 
-    })
-}
+  clientProxyMachine(): ClientProxy {
+    return ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: this.config.get('AMQP_URL'),
+        queue: RabbitMQ.MachineQueue,
+      },
+    });
+  }
+
 clientProxyRespuestas(): ClientProxy{
   return ClientProxyFactory.create({
      transport: Transport.RMQ,
@@ -45,7 +59,7 @@ clientProxyRespuestas(): ClientProxy{
          queue: RabbitMQ.RespuestaQueue,
             }
 
-  })
+  });
+}
 }
 
-}
