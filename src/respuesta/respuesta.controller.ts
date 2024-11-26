@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RespuestaDTO } from './dto/respuesta.dto'; // Asegúrate de tener definido el DTO para respuesta
-import { RespuestaMsg } from 'src/common/constants'; // Asegúrate de tener definidos los mensajes para Rabbit 
+import { RespuestaMsg } from 'src/common/constants'; // Asegúrate de tener definidos los mensajes para Rabbit
 import { IResponse } from 'src/common/interfaces/respuesta.interface';
 import { ClientProxyWebMovil } from 'src/common/proxy/client-proxy';
 
@@ -20,7 +20,16 @@ export class RespuestaController {
     @Param('questionnaireId') cuestionarioId: string,
     @Body() respuestaDTO: RespuestaDTO): Observable<IResponse> {
 
-    const payload = { respuestaDTO, usuarioId, cuestionarioId };
+    // Agregar información adicional al payload como patente, fecha_respuesta y geolocalización
+    const payload = {
+      respuestaDTO,
+      usuarioId,
+      cuestionarioId,
+      patente: respuestaDTO.patente, // La patente se espera que venga en el DTO
+      fecha_respuesta: new Date(), // Se registra la fecha y hora actual
+      geolocalizacion: respuestaDTO.geolocalizacion, // Geolocalización desde el DTO
+    };
+
     return this._clientProxyRespuesta.send(RespuestaMsg.CREATE, payload);
   }
 
