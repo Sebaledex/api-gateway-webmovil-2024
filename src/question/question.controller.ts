@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } fro
 import { ClientProxyWebMovil } from 'src/common/proxy/client-proxy';
 
 import { Observable } from 'rxjs';
-import { QuestionsMSG, UserMSG } from 'src/common/constants';
+import { QuestionsMSG } from 'src/common/constants';
 import { ApiTags } from '@nestjs/swagger';
 import { QuestionDTO } from './dto/question.dto';
 import { IQuestion } from 'src/common/interfaces/question.interface';

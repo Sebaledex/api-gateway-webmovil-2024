@@ -3,7 +3,7 @@ export enum RabbitMQ {
   AreaQueue = 'area',
   QuestionsQueue = 'question',
   RespuestaQueue = 'respuestas',
-  MachineQueue = 'machine',
+  MaquinaQueue = 'maquinas',
 
 }
 
@@ -23,6 +23,8 @@ export enum UserMSG {
   UPDATE = 'UPDATE_USER',
   DELETE = 'DELETE_USER',
   VALID_USER = 'VALID_USER',
+  UPDATE_ACCESS_TOKEN= 'update_access_token',
+  UPDATE_REFRESH_TOKEN = "UPDATEREFRESHTOKEN"
 }
 
 export enum QuestionsMSG {
@@ -35,14 +37,15 @@ export enum QuestionsMSG {
   SAVE_ANSWER = 'SAVE_ANSWERS',
 }
 
-export enum MachineMSG {
-  CREATE = 'CREATE',
-  UPDATE = 'UPDATE',
-  DELETE = 'DELETE',
-  FIND_ALL = 'FIND_ALL',
-  FIND_ONE = 'FIND_ONE',
+export enum MaquinaMsg {
+  CREATE = 'CREATE_MACHINE',
+  FIND_ALL = 'FIND_MACHINES',
+  FIND_ONE = 'FIND_MACHINE',
+  UPDATE = 'UPDATE_MACHINE',
+  DELETE = 'DELETE_MACHINE',
+  FIND_BY_AREA = 'FIND_AREA',
+  
 }
-
 
 export enum RespuestaMsg {
   CREATE = 'CREATE_RESPUESTA',
