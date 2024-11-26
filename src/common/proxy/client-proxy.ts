@@ -46,7 +46,7 @@ export class ClientProxyWebMovil {
       transport: Transport.RMQ,
       options: {
         urls: this.config.get('AMQP_URL'),
-        queue: RabbitMQ.MachineQueue,
+        queue: RabbitMQ.MaquinaQueue,
       },
     });
   }

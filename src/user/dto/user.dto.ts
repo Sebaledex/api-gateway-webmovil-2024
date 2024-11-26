@@ -18,5 +18,11 @@ export class UserDTO {
   @IsNotEmpty()
   @IsString()
   readonly password: string;
+  @ApiProperty()
+  readonly accessToken: string;
+  @ApiProperty()
+  readonly refreshToken: string;
+  @ApiProperty()
+  readonly area: string;
 }
 

@@ -1,40 +1,45 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { MachineMSG } from 'src/common/constants';
+import { Observable } from 'rxjs';
+import { MaquinaMsg } from 'src/common/constants'; // Define los mensajes de RabbitMQ
 import { ClientProxyWebMovil } from 'src/common/proxy/client-proxy';
-import { MachineDTO } from './dto/machine.dto';
+import { MachineDTO } from './dto/maquina.dto';
+import { IMachine } from 'src/common/interfaces/maquina.interface';
 
-@ApiTags('Machine')
-@Controller('api/v2/machine')
+
+@ApiTags('Machines')
+@Controller('api/v2/machines')
 export class MachineController {
-  private _clientProxyMachine: ClientProxy;
-  constructor(private readonly clientProxy: ClientProxyWebMovil) {
-    this._clientProxyMachine = this.clientProxy.clientProxyMachine();
+  constructor(private readonly clientProxy: ClientProxyWebMovil) {}
+  private _clientProxyMachine = this.clientProxy.clientProxyMachine();
+
+  @Post()
+  create(@Body() machineDTO: MachineDTO): Observable<IMachine> {
+    return this._clientProxyMachine.send(MaquinaMsg.CREATE, machineDTO);
   }
 
-  @Get('all')
-  async allMachine() {
-    return this._clientProxyMachine.send(MachineMSG.FIND_ALL, {});
+  @Get()
+  findAll(): Observable<IMachine[]> {
+    return this._clientProxyMachine.send(MaquinaMsg.FIND_ALL, '');
   }
 
-  @Get('one')
-  async oneMachine(@Param('id') id: string) {
-    return this._clientProxyMachine.send(MachineMSG.FIND_ONE, id);
+  @Get(':id')
+  findOne(@Param('id') id: string): Observable<IMachine> {
+    return this._clientProxyMachine.send(MaquinaMsg.FIND_ONE, id);
   }
 
-  @Post('create')
-  async createMachine(data: MachineDTO) {
-    return this._clientProxyMachine.send(MachineMSG.CREATE, data);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() machineDTO: MachineDTO): Observable<IMachine> {
+    return this._clientProxyMachine.send(MaquinaMsg.UPDATE, { id, machineDTO });
   }
 
-  @Patch('update')
-  async updateMachine(data: MachineDTO) {
-    return this._clientProxyMachine.send(MachineMSG.UPDATE, data);
+  @Delete(':id')
+  delete(@Param('id') id: string): Observable<any> {
+    return this._clientProxyMachine.send(MaquinaMsg.DELETE, id);
   }
 
-  @Delete('delete')
-  async deleteMachine(@Param('id') id: string) {
-    return this._clientProxyMachine.send(MachineMSG.DELETE, id);
+  @Get('area/:area')
+  findByArea(@Param('area') area: string): Observable<IMachine[]> {
+    return this._clientProxyMachine.send(MaquinaMsg.FIND_BY_AREA, area);
   }
 }
