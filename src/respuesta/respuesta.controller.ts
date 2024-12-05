@@ -8,7 +8,7 @@ import { IResponse } from 'src/common/interfaces/respuesta.interface';
 import { ClientProxyWebMovil } from 'src/common/proxy/client-proxy';
 
 @ApiTags('respuesta')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('api/v2/respuesta')
 export class RespuestaController {
   constructor(private readonly clientProxy: ClientProxyWebMovil) {}

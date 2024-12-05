@@ -32,6 +32,10 @@ export class AuthService {
       access_token: this.jwtService.sign(payload, { expiresIn: '60s' }), // Token de acceso con duración corta
       refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }), // Token de refresco con duración más larga
       userId: user._id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      area:user.area,
     };
   }
 

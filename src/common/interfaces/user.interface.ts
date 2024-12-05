@@ -6,5 +6,4 @@ export interface IUser {
   accessToken: string;
   refreshToken: string;
   area: string;
-
 }
