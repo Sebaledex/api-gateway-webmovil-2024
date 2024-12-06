@@ -28,6 +28,7 @@ export class RespuestaController {
       patente: respuestaDTO.patente, // La patente se espera que venga en el DTO
       fecha_respuesta: new Date(), // Se registra la fecha y hora actual
       geolocalizacion: respuestaDTO.geolocalizacion, // Geolocalización desde el DTO
+      foto: respuestaDTO.foto,
     };
 
     return this._clientProxyRespuesta.send(RespuestaMsg.CREATE, payload);
